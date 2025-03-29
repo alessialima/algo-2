@@ -7,21 +7,24 @@ public class Recordatorio {
 
 
     public Recordatorio(String mensaje, Fecha fecha, Horario horario) {
-        this.mensaje = mensaje; 
-        this.fecha = fecha;
-        this.horario = horario;
+        this.mensaje = new Mensaje(mensaje); 
+        this.fecha = new Fecha(fecha);
+        this.horario = new Horario(horario);
     }
 
     public Horario horario() {
-        return horario;
+        Horario horario2 = new Horario(horario); 
+        return horario2;
     }
 
     public Fecha fecha() {
-        return fecha;
+        Fecha fecha2 = new Fecha(fecha);
+        return fecha2;
     }    
 
     public String mensaje() { 
-        return mensaje;
+        Mensaje mensaje2 = new Mensaje(mensaje);
+        return mensaje2;
     }
 
     @Override
