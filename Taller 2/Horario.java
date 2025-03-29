@@ -30,7 +30,7 @@ public class Horario {
         boolean otroIsNull = (otro == null);
         boolean claseDistinta = otro.getClass() != this.getClass();
 
-        if (otroIsNull|| claseDistinta) {
+        if (otroIsNull || claseDistinta) {
             return false;
         }
         Horario otroHorario = (Horario) otro; 
