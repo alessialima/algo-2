@@ -7,14 +7,13 @@ public class Recordatorio {
 
 
     public Recordatorio(String mensaje, Fecha fecha, Horario horario) {
-        this.mensaje = new Mensaje(mensaje); 
+        this.mensaje = new String(mensaje); 
         this.fecha = new Fecha(fecha);
-        this.horario = new Horario(horario);
+        this.horario = horario;
     }
 
     public Horario horario() {
-        Horario horario2 = new Horario(horario); 
-        return horario2;
+        return horario;
     }
 
     public Fecha fecha() {
@@ -23,7 +22,7 @@ public class Recordatorio {
     }    
 
     public String mensaje() { 
-        Mensaje mensaje2 = new Mensaje(mensaje);
+        String mensaje2 = new String(mensaje);
         return mensaje2;
     }
 
