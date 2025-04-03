@@ -9,7 +9,7 @@ public class Recordatorio {
     public Recordatorio(String mensaje, Fecha fecha, Horario horario) {
         this.mensaje = new String(mensaje); 
         this.fecha = new Fecha(fecha);
-        this.horario = horario; // consultar si esta bien que horario este asi . de otro modo aparecia error 
+        this.horario = horario;
     }
 
     public Horario horario() {
@@ -28,7 +28,7 @@ public class Recordatorio {
 
     @Override
     public String toString() {
-        String res = mensaje + "@" + fecha.toString() + horario.toString();
+        String res = mensaje + " " + "@" + " " + fecha.toString() + " " + horario.toString();
         return res;
     }
 
