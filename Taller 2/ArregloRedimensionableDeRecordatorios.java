@@ -33,11 +33,18 @@ class ArregloRedimensionableDeRecordatorios {
     public void quitarAtras() {
        Recordatorio[] recordatorio_new = new Recordatorio[longitud()-1];
 
-       for (int j=0; j<(longitud()-2); j++){
-        recordatorio_new[j] = this.recordatorio[j];
+       if (this.longitud != 0){
+        for (int j=0; j<(longitud()-2); j++){
+            recordatorio_new[j] = this.recordatorio[j];
+           }
+           this.longitud -= 1;
+           this.recordatorio = recordatorio_new.clone();
        }
-       this.longitud -= 1;
-       this.recordatorio = recordatorio_new.clone();
+       else {
+        this.longitud = 0;
+        // como hago para dejar el recordatorio como esta ??? 
+       }
+
     }
 
     public void modificarPosicion(int indice, Recordatorio valor) {
