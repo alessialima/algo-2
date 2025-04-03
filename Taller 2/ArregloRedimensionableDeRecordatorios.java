@@ -11,19 +11,27 @@ class ArregloRedimensionableDeRecordatorios {
     }
 
     public int longitud() {
-        return this.recordatorio.length;
+        return longitud;
     }
 
     public void agregarAtras(Recordatorio i) {
-        Recordatorio[] recordatorio2 = new Recordatorio[this.recordatorio.length + 1];
+            Recordatorio[] recordatorio_new = new Recordatorio[longitud() + 1];
 
-        for (int j = 0; j < this.recordatorio.length; j++) {
-            recordatorio2[j] = this.recordatorio[j];
-            
-        }
-        recordatorio2[recordatorio2.length - 1] = i; 
-        this.longitud += 1;
-        this.recordatorio = recordatorio2.clone();
+            if (longitud() != 0){
+
+                for (int j = 0; j < this.recordatorio.length; j++) {
+                    recordatorio_new[j] = this.recordatorio[j];
+                    
+                }
+                recordatorio_new[recordatorio_new.length - 1] = i; 
+                this.longitud += 1;
+                recordatorio = recordatorio_new.clone();
+            }
+            else {
+                recordatorio_new[0] = i;
+                longitud = 1;
+                recordatorio = recordatorio_new.clone();
+            }
     }
 
     public Recordatorio obtener(int i) {
@@ -31,19 +39,18 @@ class ArregloRedimensionableDeRecordatorios {
     }
 
     public void quitarAtras() {
-       Recordatorio[] recordatorio_new = new Recordatorio[longitud()-1];
-
-       if (this.longitud != 0){
-        for (int j=0; j<(longitud()-2); j++){
-            recordatorio_new[j] = this.recordatorio[j];
-           }
-           this.longitud -= 1;
-           this.recordatorio = recordatorio_new.clone();
-       }
-       else {
-        this.longitud = 0;
-        // como hago para dejar el recordatorio como esta ??? 
-       }
+       
+        if (longitud() != 0){
+            Recordatorio[] recordatorio_new = new Recordatorio[longitud() - 1];
+            for (int j=0; j<(longitud()-1);j++){
+                recordatorio_new[j] = recordatorio[j];
+            }
+            longitud -= 1;
+            recordatorio = recordatorio_new;
+        }
+        else {
+            longitud = 0;
+        }
 
     }
 
