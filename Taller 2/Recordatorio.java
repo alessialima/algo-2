@@ -39,9 +39,9 @@ public class Recordatorio {
 
         if (otraIsNull || claseDistinta) return false; 
 
-        String otroMensaje = (String) otro;
+        Recordatorio otroRecordatorio = (Recordatorio) otro;
 
-        return (fecha.equals(fecha) && horario.equals(horario) && (mensaje == otroMensaje));
+        return (fecha.equals(fecha) && horario.equals(horario) && (mensaje == otroRecordatorio.mensaje));
         
     }
 
