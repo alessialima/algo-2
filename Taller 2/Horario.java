@@ -1,41 +1,74 @@
 package aed;
 
-public class Horario {
-    private int hora; 
-    private int minutos;
+public class Fecha {
+    private int dia;
+    private int mes; 
 
-    public Horario(int hora, int minutos) {
-       this.hora = hora;
-       this.minutos = minutos;
+    public Fecha(int dia, int mes) {
+        this.dia = dia;
+        this.mes = mes;
     }
 
-    public int hora() {
-        return hora;
+    public Fecha(Fecha fecha) {
+        dia = fecha.dia;
+        mes = fecha.mes;
     }
 
-    public int minutos() {
-        return minutos;
+    public Integer dia() {
+        return dia;
     }
 
-    @Override
+    public Integer mes() {
+        return mes;
+    }
+
     public String toString() {
-        String hora_String = Integer.toString(hora);
-        String minutos_String = Integer.toString(minutos);
-        String res = hora_String + ":" + minutos_String;
-        return res;
+        String dia_String = Integer.toString(dia);
+        String mes_String = Integer.toString(mes);
+        String res = dia_String + "/" + mes_String;
+        return res; 
     }
 
     @Override
-    public boolean equals(Object otro) {
-        boolean otroIsNull = (otro == null);
-        boolean claseDistinta = otro.getClass() != this.getClass();
+    public boolean equals(Object otra) {
+        boolean otraIsNull = (otra == null);
+        boolean claseDistinta = otra.getClass() != this.getClass();
 
-        if (otroIsNull || claseDistinta) {
+        if (otraIsNull || claseDistinta) {
             return false;
         }
-        Horario otroHorario = (Horario) otro; 
+        Fecha otraFecha = (Fecha) otra;
 
-        return ((hora == otroHorario.hora) && (minutos == otroHorario.minutos));
+        return ((dia == otraFecha.dia) && (mes == otraFecha.mes));
     }
 
+    public void incrementarDia() {
+        int res = dia + 1;
+        int aux = mes + 1;
+
+        if (res <= diasEnMes(mes)) {
+            this.dia = res;
+        }
+        else{
+            if (mes == 12){
+                this.dia = 1;
+                this.mes = 1;
+            }
+            else {
+                this.dia = 1;
+                this.mes = aux;
+            }
+        }
+
+    }
+
+    private int diasEnMes(int mes) {
+        int dias[] = {
+                // ene, feb, mar, abr, may, jun
+                31, 28, 31, 30, 31, 30,
+                // jul, ago, sep, oct, nov, dic
+                31, 31, 30, 31, 30, 31
+        };
+        return dias[mes - 1];
+    }
 }
