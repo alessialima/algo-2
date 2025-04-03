@@ -1,12 +1,11 @@
 package aed;
 
 public class Agenda {
-    private final Fecha fechaActual;
+    private Fecha fechaActual; 
     private ArregloRedimensionableDeRecordatorios agenda;
 
     public Agenda(Fecha fechaActual) {
-        this.fechaActual = fechaActual;
-        this.agenda = new ArregloRedimensionableDeRecordatorios(agenda);
+        this.fechaActual = new Fecha(fechaActual);
     }
 
     public void agregarRecordatorio(Recordatorio recordatorio) {
@@ -29,9 +28,10 @@ public class Agenda {
     }
 
     public Fecha fechaActual() {
-        Fecha fechaActual2= new Fecha(fechaActual);
+        Fecha fechaActual2 = new Fecha(fechaActual);
         return fechaActual2;
     }
 
 }
+
 
