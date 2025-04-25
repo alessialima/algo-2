@@ -1,5 +1,3 @@
-/ * escribir bien el nombre del archivo en casa antes de entregar ok * / 
-
 package aed;
 
 import java.util.*;
@@ -7,33 +5,42 @@ import java.util.*;
 public class ListaEnlazada<T> implements Secuencia<T> {
     private T[] elementos;
     private int size;
-    private Nodo primero;
+    private Nodo primero; 
     private Nodo ultimo;
 
     private class Nodo {
-       int valor;
-       Nodo sig;
-       Nodo ant;
+     Nodo sig;
+     Nodo ant;
+     int valor; 
 
-       Nodo(int v) {valor = v;} 
-      
+     public Nodo(int v) {
+        this.valor = v;
+     }
 
     }
 
     public ListaEnlazada() {
-        throw new UnsupportedOperationException("No implementada aun");
+        primero = null; 
     }
 
     public int longitud() {
-        throw new UnsupportedOperationException("No implementada aun");
+        return size;
+        
     }
 
     public void agregarAdelante(T elem) {
-        throw new UnsupportedOperationException("No implementada aun");
+        Nodo nuevo = new Nodo(elem);
+        nuevo.sig = primero;
+        nuevo.ant = null;
+        primero = nuevo; 
+        size ++;
     }
 
     public void agregarAtras(T elem) {
-        throw new UnsupportedOperationException("No implementada aun");
+        Nodo nuevo = new Nodo(elem);
+        nuevo.ant = ultimo;
+        nuevo.sig = null;
+        size ++;
     }
 
     public T obtener(int i) {
@@ -49,7 +56,12 @@ public class ListaEnlazada<T> implements Secuencia<T> {
     }
 
     public ListaEnlazada(ListaEnlazada<T> lista) {
-        throw new UnsupportedOperationException("No implementada aun");
+        Nodo actual = lista.primero;
+        while (actual != null){
+            agregarAtras(actual.valor);
+            actual = actual.sig;                      
+        }
+
     }
     
     @Override
@@ -59,7 +71,7 @@ public class ListaEnlazada<T> implements Secuencia<T> {
 
     private class ListaIterador implements Iterador<T> {
     	int dedito;
-        Iterador(){
+        Iterador() { 
             dedito = 0;
         }
 
@@ -90,3 +102,4 @@ public class ListaEnlazada<T> implements Secuencia<T> {
     }
 
 }
+
