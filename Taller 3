@@ -11,9 +11,9 @@ public class ListaEnlazada<T> implements Secuencia<T> {
     private class Nodo {
      Nodo sig;
      Nodo ant;
-     int valor; 
+     T valor; 
 
-     public Nodo(int v) {
+     public Nodo(T v) {
         this.valor = v;
      }
 
