@@ -44,11 +44,22 @@ public class ListaEnlazada<T> implements Secuencia<T> {
     }
 
     public T obtener(int i) {
-        throw new UnsupportedOperationException("No implementada aun");
+        return elemento[i];
     }
 
     public void eliminar(int i) {
-        throw new UnsupportedOperationException("No implementada aun");
+        Nodo actual = primero;
+        Nodo prev = primero;
+        for (int j = 0; j < i; j++) {
+         prev = actual;
+         actual = actual.sig;
+        }
+        if (i == 0) {
+         primero = actual.sig;
+        } 
+        else {
+         prev.sig = actual.sig;
+        }
     }
 
     public void modificarPosicion(int indice, T elem) {
@@ -66,7 +77,12 @@ public class ListaEnlazada<T> implements Secuencia<T> {
     
     @Override
     public String toString() {
-        throw new UnsupportedOperationException("No implementada aun");
+       String word = "";
+       for (int j = 0; j < size; j++) {
+        String elemento_string = T.toString(elemento[j]);
+        String word += elemento_string; 
+       }
+       return word;
     }
 
     private class ListaIterador implements Iterador<T> {
@@ -102,4 +118,3 @@ public class ListaEnlazada<T> implements Secuencia<T> {
     }
 
 }
-
