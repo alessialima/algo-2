@@ -113,3 +113,43 @@ public class ListaEnlazada<T> implements Secuencia<T> {
         size --;
     }
     }
+
+    public void modificarPosicion(int indice, T elem) {
+        if (indice == 0){
+            primero.valor = elem;
+        }
+        else {
+            Nodo actual = primero;
+            for (int j = 0; j< size; j++) {
+                if (j == indice){
+                    actual.valor = elem;
+                } 
+                else {
+                    actual = actual.sig;
+                }
+            }
+        }
+    }
+
+    public ListaEnlazada(ListaEnlazada<T> lista) {
+        Nodo actual = lista.primero;
+        while (actual != null){
+            agregarAtras(actual.valor);
+            actual = actual.sig;                      
+        }
+
+    }
+    
+    @Override
+    public String toString() {
+       String res = "[";
+       res += obtener(0).toString();
+       for (int j = 0; j < size; j++) {
+        if (obtener(j) != null && j != 0){
+            res += ", "; 
+            res += obtener(j).toString();
+        }
+       }
+       res += "]";
+       return res;
+    }
