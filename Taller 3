@@ -12,6 +12,7 @@ public class ListaEnlazada<T> implements Secuencia<T> {
      Nodo sig;
      Nodo ant;
      T valor; 
+     
 
      public Nodo(T v) {
         this.valor = v;
@@ -21,6 +22,8 @@ public class ListaEnlazada<T> implements Secuencia<T> {
 
     public ListaEnlazada() {
         primero = null; 
+        ultimo = null;
+        size = 0;
     }
 
     public int longitud() {
@@ -30,91 +33,83 @@ public class ListaEnlazada<T> implements Secuencia<T> {
 
     public void agregarAdelante(T elem) {
         Nodo nuevo = new Nodo(elem);
-        nuevo.sig = primero;
-        nuevo.ant = null;
-        primero = nuevo; 
-        size ++;
+        if (primero == null){
+            nuevo.sig = null;
+            nuevo.ant = null;
+            primero = nuevo;
+            ultimo = nuevo;
+            size = 1; 
+        }
+        else {
+            nuevo.sig = primero;
+            primero = nuevo; 
+            size ++;
+        }
+
     }
 
     public void agregarAtras(T elem) {
         Nodo nuevo = new Nodo(elem);
-        nuevo.ant = ultimo;
-        nuevo.sig = null;
-        size ++;
+        if (ultimo == null){
+            nuevo.sig = null;
+            nuevo.ant = null;
+            primero = nuevo;
+            ultimo = nuevo;
+            size = 1;
+        }
+        else {
+            ultimo.sig = nuevo;
+            nuevo.ant = ultimo;
+            ultimo = nuevo; 
+            size ++;
+        }
     }
 
     public T obtener(int i) {
-        return elemento[i];
+        Nodo actual = primero;
+        if (i<0 || i>= size){
+            return null;
+        }
+        else {
+            for (int j=0;j<i;j++)  {
+               actual = actual.sig;
+            }
+            return actual.valor;
+        }
     }
 
     public void eliminar(int i) {
-        Nodo actual = primero;
-        Nodo prev = primero;
-        for (int j = 0; j < i; j++) {
-         prev = actual;
-         actual = actual.sig;
+        Nodo actual = primero; 
+        Nodo desp = primero.sig; 
+        Nodo antes = primero;
+           
+        if (size == 1) {
+            primero = null;
+            ultimo = null;
+            size = 0; 
         }
-        if (i == 0) {
-         primero = actual.sig;
-        } 
-        else {
-         prev.sig = actual.sig;
-        }
+        else { 
+            if (i == (size-1)){
+                antes = ultimo.ant; 
+                antes.sig = null; 
+                ultimo = antes; 
+            }
+            else {
+                for (int j = 0;j < i; j++) {
+                    antes = actual; 
+                    actual = actual.sig;
+                    desp = desp.sig;
+                }
+                if (i == 0) {
+                    desp.ant = null; 
+                    primero = desp; 
+                 }
+                else { 
+                antes.sig = desp;
+                desp.ant = antes;
+            }
+           }
+
+        size --;
     }
-
-    public void modificarPosicion(int indice, T elem) {
-        throw new UnsupportedOperationException("No implementada aun");
     }
-
-    public ListaEnlazada(ListaEnlazada<T> lista) {
-        Nodo actual = lista.primero;
-        while (actual != null){
-            agregarAtras(actual.valor);
-            actual = actual.sig;                      
-        }
-
-    }
-    
-    @Override
-    public String toString() {
-       String word = "";
-       for (int j = 0; j < size; j++) {
-        String elemento_string = T.toString(elemento[j]);
-        String word += elemento_string; 
-       }
-       return word;
-    }
-
-    private class ListaIterador implements Iterador<T> {
-    	int dedito;
-        Iterador() { 
-            dedito = 0;
-        }
-
-        public boolean haySiguiente() {
-	        return dedito != size;
-        }
-        
-        public boolean hayAnterior() {
-	        return dedito != 0;
-        }
-
-        public T siguiente() {
-	        int i = dedito; 
-            dedito = dedito + 1;
-            return elementos[i];
-        }
-        
-
-        public T anterior() {
-	        int i = dedito;
-            dedito = dedito - 1;
-            return elementos[i];
-        }
-    }
-
-    public Iterador<T> iterador() {
-	    return new Iterador();
-    }
-
-}
