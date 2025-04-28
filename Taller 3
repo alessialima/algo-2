@@ -153,3 +153,35 @@ public class ListaEnlazada<T> implements Secuencia<T> {
        res += "]";
        return res;
     }
+
+    private class ListaIterador implements Iterador<T> {
+        int dedito = 0; 
+
+
+        public boolean haySiguiente() {
+	        return dedito != size;
+        }
+        
+        public boolean hayAnterior() {
+	        return dedito != 0;
+        }
+
+        public T siguiente() {
+	        int i = dedito; 
+            dedito = dedito + 1;
+            return obtener(i);  
+        }
+        
+
+        public T anterior() {
+	        int i = dedito;
+            dedito = dedito -1;
+            return obtener(i);
+        }
+    }
+
+    public Iterador<T> iterador() {
+            return Iterador(); 
+        }
+
+}
