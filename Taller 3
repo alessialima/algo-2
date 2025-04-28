@@ -8,6 +8,7 @@ public class ListaEnlazada<T> implements Secuencia<T> {
     private Nodo primero; 
     private Nodo ultimo;
 
+
     private class Nodo {
      Nodo sig;
      Nodo ant;
@@ -159,29 +160,30 @@ public class ListaEnlazada<T> implements Secuencia<T> {
 
 
         public boolean haySiguiente() {
-	        return dedito != size;
+	        return dedito < size;
         }
         
         public boolean hayAnterior() {
-	        return dedito != 0;
+	        return dedito > 0;
         }
 
         public T siguiente() {
-	        int i = dedito; 
+            int i = dedito;
             dedito = dedito + 1;
-            return obtener(i);  
+            return obtener(i);
+
         }
         
 
         public T anterior() {
-	        int i = dedito;
-            dedito = dedito -1;
+            int i = dedito - 1;
+            dedito --; 
             return obtener(i);
         }
     }
 
     public Iterador<T> iterador() {
-            return Iterador(); 
+            return new ListaIterador(); 
         }
 
 }
