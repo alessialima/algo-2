@@ -31,7 +31,7 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
     }
 
     public int cardinal() {
-        this._cardinal = 0;
+        return _cardinal;
     }
 
     public T minimo() {
@@ -51,66 +51,79 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
         return actual.valor;
     }
 
-    public void insertar(T elem) {
-        Nodo _nuevo = new Nodo(elem);
-        Nodo _actual = _raiz;
+    public void insertarRecursivo(Nodo _nuevo, Nodo raiz){
+        Nodo _actual = raiz;
 
-
-        if (_raiz == null){
-            _raiz = _nuevo;
-            _raiz.valor = elem;
+        if (_actual == null){
+            _actual = _nuevo;
             _cardinal += 1;
         }
+
         else {
-            if (!pertenece(elem)){
-                if (elem.compareTo(_actual.valor)<0){
+            if (!pertenece(_nuevo.valor)){
+                if(_nuevo.valor.compareTo(_actual.valor)<0){
                     if (_actual.izq == null){
                         _nuevo.padre = _actual;
+                        _cardinal += 1;
                         _actual.izq = _nuevo;
+                        // falta pensar en la altura creo 
                     }
                     else {
                         _actual = _actual.izq;
-                        // recursion como poronga empiezo otra vez
+                        insertarRecursivo(_nuevo, _actual);
                     }
                 }
                 else {
-                    if (_actual.der == null){
+                    if(_actual.der == null){
                         _nuevo.padre = _actual;
+                        _cardinal += 1;
                         _actual.der = _nuevo;
+                        // lo mismo que arriba 
                     }
                     else {
                         _actual = _actual.der;
-                        // recursion como poronga empiezo otra vez
-                    }             
+                        insertarRecursivo(_nuevo, _actual);
+                    }
                 }
             }
-        }
+
+        }     
         
     }
 
-    public boolean pertenece(T elem) {
-        Nodo nuevo = new Nodo(elem);
-        Nodo _actual = _raiz;
-        if (_actual.valor == null){
+    public void insertar(T elem) {
+        Nodo _nuevo = new Nodo(elem);
+        if (_raiz == null){
+            _cardinal += 1;
+            _raiz = _nuevo;
+        }
+        else {
+            insertarRecursivo(_nuevo, _raiz);
+        }
+    }
+
+    public boolean perteneceRecursivo(T elem, Nodo raiz){
+        Nodo _actual = raiz;
+        if (_actual == null){
             return false;
         }
        else {
-        if (elem.compareTo(_actual.valor) == 0){
-            return true;
-        }
-        else {
-            while (_actual.izq != null || _actual.der != null){
+            if (elem.compareTo(_actual.valor) == 0){
+                return true;
+            }
+            else {
                 if (elem.compareTo(_actual.valor)<0){
-                    _actual = _actual.izq;
+                    return perteneceRecursivo(elem, _actual.izq);
                 }
                 else {
-                    _actual = _actual.der;
+                    return perteneceRecursivo(elem, _actual.der);
                 }
-            }
-            
-            
+            } 
         }
-       }
+    }
+
+    public boolean pertenece(T elem) {
+        return perteneceRecursivo(elem, _raiz);
     }
 
     public void eliminar(T elem) {
