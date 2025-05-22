@@ -7,7 +7,6 @@ import java.util.*;
 public class ABB<T extends Comparable<T>> implements Conjunto<T> {
     private Nodo _raiz;
     private int _cardinal;
-    private int _altura;
 
     private class Nodo {
         T valor;
@@ -27,7 +26,6 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
     public ABB() {
         _raiz = null;
         _cardinal = 0;
-        _altura = 0;
     }
 
     public int cardinal() {
@@ -126,17 +124,135 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
         return perteneceRecursivo(elem, _raiz);
     }
 
-    public void eliminar(T elem) {
-        if ( !pertenece(elem)){
-            // no hago nada
+    public Nodo devolverNodo(T elem, Nodo raiz) {
+         Nodo _actual = raiz;
+        if (_actual == null){
+            return _actual;
         }
-        else {
-           
+       else {
+            if (elem.compareTo(_actual.valor) == 0){
+                return _actual;
+            }
+            else {
+                if (elem.compareTo(_actual.valor)<0){
+                    return devolverNodo(elem, _actual.izq);
+                }
+                else {
+                    return devolverNodo(elem, _actual.der);
+                }
+            } 
         }
+        
     }
 
+    public Nodo minimo_a_su_der(T elem){
+        Nodo _actual = devolverNodo(elem, _raiz).der;
+        while (_actual.izq != null){
+            _actual = _actual.izq;
+        }
+        return _actual;
+    }
+
+    public Nodo sucesor(T elem, Nodo _raiz){
+        Nodo _sucesor = devolverNodo(elem, _raiz);
+        Nodo _actual = _raiz;
+        if (_sucesor == null) {
+            return null;
+        }
+        else { 
+        if (_actual.valor.compareTo(elem)==0){
+            if(_actual.der != null){
+                _sucesor = minimo_a_su_der(elem);
+            }
+            else {
+                _sucesor = _actual.padre;
+            }
+        }
+        else {
+            if (_actual.valor.compareTo(elem) <= 0){
+                _actual = _actual.izq;
+                return sucesor(elem, _actual);
+            }
+            else {
+                _actual = _actual.der;
+                return sucesor(elem, _actual);
+            }
+        }
+        return _sucesor;
+    }
+   }
+// super comentado pq se me complica sino ajaj
+    public void eliminar(T elem) {
+        Nodo _actual = devolverNodo(elem, _raiz);
+        Nodo papa = _actual.padre;
+                  
+            // si no tiene hijos: 
+            if (_actual.der == null && _actual.izq == null){
+                // si es la raiz sin hijos
+                if (_actual.padre == null){
+                    _raiz = null;
+                    _cardinal -= 1;
+                }
+                else { // no es la raiz pero no tiene hijos
+                     // esta a la izq de papa
+                    if (papa.izq == _actual){
+                    _actual.padre.izq = null;
+                    _cardinal -= 1;
+                   }
+                   // esta a la derecha de papa 
+                else {
+                    _actual.padre.der = null;
+                    _cardinal -= 1;
+                }
+            }
+            }
+            else {
+                // tiene un solo hijo 
+                if (_actual.der == null){ // hijo izq
+                     
+                    if (papa.izq == _actual){ // si actual es hijo izquierdo 
+                       papa.izq = _actual.izq; 
+                       _actual.izq.padre = papa;
+                       _cardinal -= 1;
+                    }
+                    else { // si actual es hijo derecho 
+                         papa.der = _actual.izq;
+                         _actual.izq.padre = papa;
+                         _cardinal -= 1;
+                    }
+                }
+                else {
+                    if (_actual.izq == null) { // hijo derecho
+                         if (_actual.padre.izq == _actual){ // es hijo izq
+                       papa.izq = _actual.der;
+                       _actual.der.padre = papa;
+                       _cardinal -= 1;
+                    }
+                    else { // es hijo der 
+                         papa.der = _actual.der;
+                         _actual.der.padre = papa;
+                         _cardinal -= 1;
+                    }
+                    }
+                    else { // tiene dos hijos 
+                     Nodo sucesor = minimo_a_su_der(elem);
+                     T valorSuc = sucesor.valor;
+                     eliminar(valorSuc);
+                     _actual.valor = valorSuc;
+                        
+                    }
+                }
+            }
+        }
+
     public String toString() {
-        throw new UnsupportedOperationException("No implementada aun");
+       String res = "{";
+       while (_raiz!= null){ 
+        res += minimo().toString();
+        eliminar(minimo());
+       }
+       res += "}";
+       return res;
     }
 
     private class ABB_Iterador implements Iterador<T> {
