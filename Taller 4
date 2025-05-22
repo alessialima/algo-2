@@ -127,7 +127,7 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
     public Nodo devolverNodo(T elem, Nodo raiz) {
          Nodo _actual = raiz;
         if (_actual == null){
-            return _actual;
+            return null;
         }
        else {
             if (elem.compareTo(_actual.valor) == 0){
@@ -146,11 +146,24 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
     }
 
     public Nodo minimo_a_su_der(T elem){
-        Nodo _actual = devolverNodo(elem, _raiz).der;
+        Nodo _actual = devolverNodo(elem, _raiz);
+        if (_actual == null){
+            return null;
+        }
+        else {
+            if (_actual.der == null){
+                return null;
+            }
+            else {
+        _actual = _actual.der;
+
         while (_actual.izq != null){
             _actual = _actual.izq;
         }
         return _actual;
+            }
+        }
+
     }
 
     public Nodo sucesor(T elem, Nodo _raiz){
@@ -272,33 +285,36 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
             }
         }
 
-
-        public T minimoArbol(Nodo _raiz) {
-        Nodo actual = _raiz;
-        while(actual.izq != null){
-            actual = actual.izq;
-        }
-        return actual.valor;
-    } 
-
     public String toString() {
-       Nodo _actual = devolverNodo(minimo(), _raiz);
+        if (_raiz == null){
+           String res = "{}";
+           return res;
+        }
+        else {
+            Nodo _actual = devolverNodo(minimo(), _raiz);
+       
        String res = "{";
-       res += _actual.valor.toString();
+       res += minimo().toString();
+
+       _actual = minimo_a_su_der(_actual.valor);
 
        while (_actual!= null){ 
-        // poner minimo ahre 
+        res += _actual.valor;
         res += ',';
+        _actual = minimo_a_su_der(_actual.valor);
        }
        res += "}";
        return res;
+        }
+      
     }
 
     private class ABB_Iterador implements Iterador<T> {
-        private Nodo _actual = _raiz;
+        private Nodo _ActualNodo = devolverNodo(minimo(),_raiz);
+        private T _actual = minimo();
 
         public boolean haySiguiente() {
-            if (_actual.der != null){
+            if (sucesor(_actual,_raiz) != null){
                 return true;
             }
             else {
@@ -307,8 +323,15 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
         }
 
         public T siguiente() {
-            _actual = _actual.der; 
-            return _actual.valor;
+            if (_ActualNodo == devolverNodo(minimo(),_raiz)){
+                _ActualNodo = minimo_a_su_der(minimo());
+                return minimo();
+            }
+            else {
+               _actual = _ActualNodo.valor;
+               _ActualNodo = minimo_a_su_der(_ActualNodo.valor);
+               return _actual;
+            }
         }
     }
 
