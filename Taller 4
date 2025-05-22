@@ -181,11 +181,37 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
         return _sucesor;
     }
    }
+
+
+    public void eliminar_raiz(T elem, Nodo _raiz){
+        Nodo _actual = _raiz;
+        
+                  if (devolverNodo(elem, _raiz).der != null) { 
+                     Nodo sucesor = minimo_a_su_der(elem);
+                     T valorSuc = sucesor.valor;
+                     eliminar(valorSuc);
+                     _raiz.valor = valorSuc;
+                     sucesor.padre.izq = null;
+                  }
+                  else {
+                       _cardinal -= 1;
+                       _actual.izq.padre = null;
+                       _raiz.valor = _actual.izq.valor;
+                       _raiz.der = _raiz.izq;
+                  }
+            }
+        
+    
+
 // super comentado pq se me complica sino ajaj
     public void eliminar(T elem) {
         Nodo _actual = devolverNodo(elem, _raiz);
         Nodo papa = _actual.padre;
-                  
+            if (papa == null) {
+                eliminar_raiz(elem, _raiz);
+            }
+            else {
+                      
             // si no tiene hijos: 
             if (_actual.der == null && _actual.izq == null){
                 // si es la raiz sin hijos
@@ -239,17 +265,30 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
                      T valorSuc = sucesor.valor;
                      eliminar(valorSuc);
                      _actual.valor = valorSuc;
-                        
                     }
                 }
+            
+            }
             }
         }
 
+
+        public T minimoArbol(Nodo _raiz) {
+        Nodo actual = _raiz;
+        while(actual.izq != null){
+            actual = actual.izq;
+        }
+        return actual.valor;
+    } 
+
     public String toString() {
+       Nodo _actual = devolverNodo(minimo(), _raiz);
        String res = "{";
-       while (_raiz!= null){ 
-        res += minimo().toString();
-        eliminar(minimo());
+       res += _actual.valor.toString();
+
+       while (_actual!= null){ 
+        // poner minimo ahre 
+        res += ',';
        }
        res += "}";
        return res;
