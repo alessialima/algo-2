@@ -291,20 +291,25 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
            return res;
         }
         else {
-            Nodo _actual = devolverNodo(minimo(), _raiz);
-       
-       String res = "{";
-       res += minimo().toString();
-
-       _actual = minimo_a_su_der(_actual.valor);
-
-       while (_actual!= null){ 
-        res += _actual.valor;
-        res += ',';
-        _actual = minimo_a_su_der(_actual.valor);
-       }
-       res += "}";
-       return res;
+            if (minimo_a_su_der(minimo()) == null){
+               String res = "{";
+               res += minimo();
+               res+= "}";
+               return res;
+            }
+            else {
+                String res = "{";
+                res += minimo();
+                T _actual = minimo_a_su_der(minimo()).valor;
+                res += _actual;
+                res += ",";
+                while (iterador().haySiguiente()) {
+                    _actual = minimo_a_su_der(_actual).valor;
+                    res += _actual;
+                    res += ",";
+                }
+                return res;
+            }
         }
       
     }
@@ -323,14 +328,17 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
         }
 
         public T siguiente() {
-            if (_ActualNodo == devolverNodo(minimo(),_raiz)){
-                _ActualNodo = minimo_a_su_der(minimo());
+
+            if (_actual == minimo()){ 
+                
+                _ActualNodo = sucesor(minimo(),_raiz);
+                _actual = _ActualNodo.valor;
                 return minimo();
             }
             else {
+               _ActualNodo = sucesor(_actual,_raiz);
                _actual = _ActualNodo.valor;
-               _ActualNodo = minimo_a_su_der(_ActualNodo.valor);
-               return _actual;
+               return _ActualNodo.valor;
             }
         }
     }
