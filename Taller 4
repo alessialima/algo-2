@@ -142,61 +142,44 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
         }
     }
 
-    public Nodo minimo_a_su_der(T elem){
-        Nodo _actual = devolverNodo(elem, _raiz);
-        if (_actual == null){
-            return null;
-        }
-        else {
-            if (_actual.der == null){
-                return null;
-            }
-            else {
-        _actual = _actual.der;
 
-        while (_actual.izq != null){
-            _actual = _actual.izq;
-        }
-        return _actual;
+    public Nodo minimo_a_la_der(Nodo _actual){
+        Nodo _sucesor = _actual.der;
+            while (_sucesor.izq != null){
+                _sucesor = _sucesor.izq;
             }
-        }
+            return _sucesor;
     }
+
 
     public Nodo sucesor(T elem, Nodo _raiz){
-        Nodo _sucesor = devolverNodo(elem, _raiz);
-        Nodo _actual = _raiz;
-        if (_sucesor == null) {
-            return null;
-        }
-        else { 
-        if (_actual.valor.compareTo(elem)==0){
-            if(_actual.der != null){
-                _sucesor = minimo_a_su_der(elem);
-            }
-            else {
-                _sucesor = _actual.padre;
-            }
+       Nodo _actual = devolverNodo(elem,_raiz);
+       if (_actual == maximo()){
+        return null;
+       }
+       else { 
+        if (_actual.der != null) {
+           return  minimo_a_la_der(_actual);
         }
         else {
-            if (_actual.valor.compareTo(elem) > 0){
-                _actual = _actual.izq;
-                return sucesor(elem, _actual);
+            Nodo papa = _actual.padre;
+            while(papa != null&&_actual==papa.der){
+                _actual = papa;
+                papa = papa.padre;
             }
-            else {
-                _actual = _actual.der;
-                return sucesor(elem, _actual);
-            }
-        }
-        return _sucesor;
+            return papa;
+       }
+       }
     }
-   }
+
+
 
 
     public void eliminar_raiz(T elem, Nodo _raiz){
         Nodo _actual = _raiz;
         
                   if (devolverNodo(elem, _raiz).der != null) { 
-                     Nodo sucesor = minimo_a_su_der(elem);
+                     Nodo sucesor = minimo_a_la_der(devolverNodo(elem,_raiz));
                      T valorSuc = sucesor.valor;
                      eliminar(valorSuc);
                      _raiz.valor = valorSuc;
@@ -270,7 +253,7 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
                     }
                     }
                     else { // tiene dos hijos 
-                     Nodo sucesor = minimo_a_su_der(elem);
+                     Nodo sucesor = minimo_a_la_der(devolverNodo(elem,_raiz));
                      T valorSuc = sucesor.valor;
                      eliminar(valorSuc);
                      _actual.valor = valorSuc;
@@ -282,59 +265,47 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
      }
 
     public String toString() {
+        
+        
         if (_raiz == null){
-           String res = "{}";
-           return res;
+            return "{}";
         }
         else {
-            if (sucesor(minimo(),_raiz) == null){
-               String res = "{";
-               res += minimo();
-               res+= "}";
-               return res;
-            }
-            else {
-                String res = "{";
-                res += iterador().siguiente();
-                T _actual = iterador().siguiente();
-                res += _actual;
-                res += ",";
-                while (iterador().haySiguiente()) {
-                    _actual = iterador().siguiente();
-                    res += _actual;
-                    res += ",";
-                }
-                return res;
-            }
-        }  
+          Iterador<T> iterar = iterador();
+          T actual = iterar.siguiente();
+          String res = "{";
+
+            while (!actual.equals(maximo())){
+            res += actual + ",";
+            actual = iterar.siguiente();
+            
+        } 
+        res += actual;
+        res += "}";
+        return res;
+        }
+        
     }
 
     private class ABB_Iterador implements Iterador<T> {
-        private Nodo _ActualNodo = devolverNodo(minimo(),_raiz);
-        private T _actual = minimo();
+        private T actual = minimo();
+        private int inicio = 0;
 
         public boolean haySiguiente() {
-            return _ActualNodo.valor != null;
+            return sucesor(actual,_raiz).valor != null;
         }
 
         public T siguiente() {
-            T auxiliar = _actual;
-            Nodo _auxiliar = sucesor(_actual,_raiz);
-
-            if (_actual == minimo()){ 
-                _ActualNodo = sucesor(_actual,_raiz);
-                return auxiliar;
+            T sucesor = actual;
+            if (inicio == 0){
+                inicio += 1;
+                return minimo();
             }
             else {
-                if (_auxiliar != null){ 
-                _actual = _ActualNodo.valor;
-                _ActualNodo = sucesor(_actual,_raiz);
-                return auxiliar;
-                }
-                else {
-                    return null;
-                }
+                actual = sucesor(actual,_raiz).valor;
+                return sucesor(sucesor,_raiz).valor;
             }
+            
         }
     }
 
