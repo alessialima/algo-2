@@ -52,23 +52,16 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
     public void insertarRecursivo(Nodo _nuevo, Nodo raiz){
         Nodo _actual = raiz;
 
-        if (_actual == null){
-            _actual = _nuevo;
-            _cardinal += 1;
-        }
-
-        else {
             if (!pertenece(_nuevo.valor)){
                 if(_nuevo.valor.compareTo(_actual.valor)<0){
                     if (_actual.izq == null){
                         _nuevo.padre = _actual;
                         _cardinal += 1;
                         _actual.izq = _nuevo;
-                        // falta pensar en la altura creo 
+                        
                     }
                     else {
-                        _actual = _actual.izq;
-                        insertarRecursivo(_nuevo, _actual);
+                        insertarRecursivo(_nuevo, _actual.izq);
                     }
                 }
                 else {
@@ -76,22 +69,22 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
                         _nuevo.padre = _actual;
                         _cardinal += 1;
                         _actual.der = _nuevo;
-                        // lo mismo que arriba 
+                      
                     }
                     else {
-                        _actual = _actual.der;
-                        insertarRecursivo(_nuevo, _actual);
+                        insertarRecursivo(_nuevo, _actual.der);
                     }
                 }
             }
         }             
-    }
+    
 
     public void insertar(T elem) {
         Nodo _nuevo = new Nodo(elem);
         if (_raiz == null){
             _cardinal += 1;
             _raiz = _nuevo;
+            _raiz.padre = null;
         }
         else {
             insertarRecursivo(_nuevo, _raiz);
@@ -192,48 +185,43 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
                        _raiz.der = _raiz.izq;
                   }
             }
-        
-    
 
-// super comentado pq se me complica sino ajaj
     public void eliminar(T elem) {
         Nodo _actual = devolverNodo(elem, _raiz);
-        Nodo papa = _actual.padre;
-            if (papa == null) {
+        
+            if (_actual.valor.compareTo(_raiz.valor) == 0) {
                 eliminar_raiz(elem, _raiz);
             }
-            else {
-                      
-            // si no tiene hijos: 
+            else { 
+                Nodo papa = _actual.padre;
             if (_actual.der == null && _actual.izq == null){
-                // si es la raiz sin hijos
+                
                 if (_actual.padre == null){
                     _raiz = null;
                     _cardinal -= 1;
                 }
-                else { // no es la raiz pero no tiene hijos
-                     // esta a la izq de papa
+                else { 
+                     
                     if (papa.izq == _actual){
                     _actual.padre.izq = null;
                     _cardinal -= 1;
-                   }
-                   // esta a la derecha de papa 
-                else {
+                   } 
+                   else {
                     _actual.padre.der = null;
                     _cardinal -= 1;
                 }
             }
-            }
+        }
             else {
-                // tiene un solo hijo 
-                if (_actual.der == null){ // hijo izq
+               
+                if (_actual.der == null){ 
                      
-                    if (papa.izq == _actual){ // si actual es hijo izquierdo 
+                    if (papa.izq == _actual){ 
                        papa.izq = _actual.izq; 
                        _actual.izq.padre = papa;
                        _cardinal -= 1;
                     }
-                    else { // si actual es hijo derecho 
+                    else { 
                          papa.der = _actual.izq;
                          _actual.izq.padre = papa;
                          _cardinal -= 1;
@@ -259,7 +247,6 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
                      _actual.valor = valorSuc;
                     }
                 }
-            
             }
          }
      }
