@@ -170,21 +170,24 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
 
     public void eliminar_raiz(T elem, Nodo _raiz){
         Nodo _actual = _raiz;
-        
+        if (_cardinal == 1){
+            this._raiz = null;
+            _cardinal = 0;
+        } else{
                   if (devolverNodo(elem, _raiz).der != null) { 
                      Nodo sucesor = minimo_a_la_der(devolverNodo(elem,_raiz));
                      T valorSuc = sucesor.valor;
                      eliminar(valorSuc);
                      _raiz.valor = valorSuc;
-                     sucesor.padre.izq = null;
+                     // sucesor.padre.izq = null;
                   }
                   else {
                        _cardinal -= 1;
+                       this._raiz = _actual.izq;
                        _actual.izq.padre = null;
-                       _raiz.valor = _actual.izq.valor;
-                       _raiz.der = _raiz.izq;
                   }
             }
+        }
 
     public void eliminar(T elem) {
         Nodo _actual = devolverNodo(elem, _raiz);
