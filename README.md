@@ -1,5 +1,5 @@
-# ALGORITMOS Y ESTRUCTURA DE DATOS (ALGO 2)
-# Talleres de laboratorio 
+# ALGORITMOS Y ESTRUCTURA DE DATOS (EX ALGO 2)
+## Talleres de laboratorio :coffee:
 
 * Taller 1: intro a Java 
 * Taller 2: POO
